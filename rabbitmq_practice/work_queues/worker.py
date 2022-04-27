@@ -1,6 +1,7 @@
 import time
 
-import pika, sys, os
+import pika
+import sys
 
 QUEUE_NAME = "task_queue"
 
