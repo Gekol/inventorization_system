@@ -34,13 +34,13 @@ class UserSerializer(serializers.ModelSerializer):
     def __check_username(self, username):
         try:
             return User.objects.get(username=username)
-        except:
+        except Exception:
             return False
 
     def __check_email(self, email):
         try:
             return User.objects.get(email=email)
-        except:
+        except Exception:
             return False
 
     def __check_password(self, password):

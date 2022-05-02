@@ -30,11 +30,11 @@ class RepairViewSet(viewsets.ModelViewSet):
         instance.fix_status = self.request.data["fix_status"]
         instance.save()
 
-        message = {
-            "fix_status": instance.fix_status,
-            "item_id": instance.id,
-            "username": request.user.username
-        }
+        # message = {
+        #     "fix_status": instance.fix_status,
+        #     "item_id": instance.id,
+        #     "username": request.user.username
+        # }
 
         # CHANNEL.basic_publish(exchange='logs', routing_key='', body=json.dumps(message))
 
