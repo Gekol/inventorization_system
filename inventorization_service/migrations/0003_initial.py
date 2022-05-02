@@ -6,7 +6,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -20,7 +19,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=100)),
-                ('status', models.CharField(choices=[('in_warehouse', 'In warehouse'), ('in_use', 'In use')], max_length=30)),
+                ('status',
+                 models.CharField(choices=[('in_warehouse', 'In warehouse'), ('in_use', 'In use')], max_length=30)),
                 ('fix_status', models.CharField(choices=[('broken', 'Broken'), ('ok', 'OK')], max_length=30)),
                 ('broke_count', models.IntegerField()),
                 ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),

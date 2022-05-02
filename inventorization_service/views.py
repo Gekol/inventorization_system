@@ -48,11 +48,11 @@ class ItemViewSet(viewsets.ModelViewSet):
             instance.owner = request.user
         instance.save()
 
-        message = {
-            "status": self.request.data["status"],
-            "item_id": instance.id,
-            "username": request.user.username
-        }
+        # message = {
+        #     "status": self.request.data["status"],
+        #     "item_id": instance.id,
+        #     "username": request.user.username
+        # }
         # CHANNEL.basic_publish(exchange='logs', routing_key='', body=json.dumps(message))
 
         return Response(instance.to_dict())
