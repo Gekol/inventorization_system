@@ -4,6 +4,10 @@ from inventorization_service.models import Item
 
 
 class ItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Item
+        fields = ['name', 'status', 'fix_status']
+
     def to_representation(self, instance):
         owner = None
         if instance.owner is not None:
@@ -17,10 +21,6 @@ class ItemSerializer(serializers.ModelSerializer):
             'broke_count': instance.broke_count,
         }
         return representation
-
-    class Meta:
-        model = Item
-        fields = ['name', 'status', 'fix_status']
 
     def create(self, validated_data):
         item = Item(
@@ -35,6 +35,9 @@ class ItemSerializer(serializers.ModelSerializer):
 
 
 class ItemUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Item
+        fields = ['owner', 'status', 'fix_status']
 
     def to_representation(self, instance):
         owner = None
@@ -49,7 +52,3 @@ class ItemUpdateSerializer(serializers.ModelSerializer):
             'broke_count': instance.broke_count,
         }
         return representation
-
-    class Meta:
-        model = Item
-        fields = ['owner', 'status', 'fix_status']

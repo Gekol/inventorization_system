@@ -12,6 +12,8 @@ class RepairSerializer(serializers.ModelSerializer):
             "id": instance.id,
             'name': instance.name,
             'owner': owner,
+            'status': instance.status,
+            'fix_status': instance.fix_status,
             'broke_count': instance.broke_count,
         }
         return representation
