@@ -18,11 +18,10 @@ class RepairViewSet(viewsets.ModelViewSet):
     queryset = Item.objects.filter(fix_status="broken")
     serializer_class = RepairSerializer
     permission_classes = [permissions.IsAuthenticated]
+    http_method_names = ["get", "options", "put", "patch"]
 
     def get_permissions(self):
         permission_classes = (IsRepairman | IsAdmin,)
-        if self.action in ["create", "destroy"]:
-            permission_classes = [IsAdmin]
         return [permission() for permission in permission_classes]
 
     def update(self, request, *args, **kwargs):

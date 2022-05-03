@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 
-from core import IsOwner
+from core import IsOwner, IsAdmin
 from inventorization_service.models import Item
 from inventorization_service.serializers import ItemSerializer, ItemUpdateSerializer
 
@@ -24,7 +24,7 @@ class ItemViewSet(viewsets.ModelViewSet):
         if self.action in ["update", "partial_update"]:
             permission_classes = [IsOwner]
         if self.action in ["create", "destroy"]:
-            permission_classes = [permissions.IsAdminUser]
+            permission_classes = [IsAdmin]
         return [permission() for permission in permission_classes]
 
     def get_serializer_class(self):

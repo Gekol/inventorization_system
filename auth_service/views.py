@@ -4,6 +4,7 @@ from rest_framework import viewsets
 
 from auth_service import serializers
 from auth_service.serializers import ChangeUserSerializer
+from core import IsAdmin
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -15,7 +16,7 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         permission_classes = [permissions.IsAuthenticated]
         if self.action in ["create", "destroy", "update", "partial_update"]:
-            permission_classes = [permissions.IsAdminUser]
+            permission_classes = [IsAdmin]
         return [permission() for permission in permission_classes]
 
     def get_serializer_class(self):
