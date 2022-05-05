@@ -37,7 +37,7 @@ class ItemSerializer(serializers.ModelSerializer):
 class ItemUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
-        fields = ['owner', 'status', 'fix_status']
+        fields = ['status', 'fix_status']
 
     def to_representation(self, instance):
         owner = None
