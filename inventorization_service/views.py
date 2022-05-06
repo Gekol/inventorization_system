@@ -1,4 +1,5 @@
 import json
+import json
 
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
@@ -24,7 +25,8 @@ class ItemViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         serializer_class = ItemSerializer
-        if self.action in ["update", "partial_update"]:
+        if self.action in ["update",
+                    "partial_update"]:
             serializer_class = ItemUpdateSerializer
         return serializer_class
 
