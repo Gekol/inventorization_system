@@ -11,8 +11,7 @@ class TestLogger(APITestCase):
     def setUp(self) -> None:
         self.folder_path = "test_logs"
         self.file_name = "info.json"
-        self.folder_path = f"/Users/georgesokolovsky/Pych" \
-                        f"armProjects/inventorization_system/tests/{self.folder_path}"
+        self.folder_path = f"/Users/georgesokolovsky/PycharmProjects/inventorization_system/tests/{self.folder_path}"
         self.logger = Logger()
 
     def test_emit_log(self):

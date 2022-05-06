@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
 from inventorization_service.models import Item
-from inventorization_service.models import Item
 
 
 class RepairSerializer(serializers.ModelSerializer):
