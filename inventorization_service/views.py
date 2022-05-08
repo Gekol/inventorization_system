@@ -10,16 +10,19 @@ from inventorization_service.serializers import ItemSerializer, ItemUpdateSerial
 
 
 class ItemViewSet(viewsets.ModelViewSet):
-    queryset = Item.objects.filter(fix_status='ok')
     permission_classes = [permissions.IsAuthenticated]
     logger = Logger()
+
+    def get_queryset(self):
+        queryset = Item.objects.filter(fix_status='ok', type_id=int(self.kwargs["nested_1_pk"]))
+        return queryset
 
     def get_permissions(self):
         permission_classes = [permissions.IsAuthenticated]
         if self.action in ["update", "partial_update"]:
-            permission_classes = [IsOwner]
+            permission_classes += [IsOwner]
         if self.action in ["create", "destroy"]:
-            permission_classes = [IsAdmin]
+            permission_classes += [IsAdmin]
         return [permission() for permission in permission_classes]
 
     def get_serializer_class(self):
@@ -48,6 +51,7 @@ class ItemViewSet(viewsets.ModelViewSet):
         message = {
             "item_id": instance.id,
             "item_name": instance.name,
+            "type": instance.type.name,
             "username": request.user.username,
             "message": message
         }

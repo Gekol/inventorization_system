@@ -10,6 +10,7 @@ class RepairSerializer(serializers.ModelSerializer):
             owner = instance.owner.username
         representation = {
             "id": instance.id,
+            "type": instance.type.name,
             'name': instance.name,
             'owner': owner,
             'status': instance.status,

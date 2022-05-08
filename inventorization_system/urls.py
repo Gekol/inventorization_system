@@ -16,19 +16,28 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, include
-from rest_framework import routers
+from rest_framework_nested import routers
 
 from auth_service import views as auth_service_views
 from inventorization_service import views as inventory_service_views
 from rms_service import views as cms_service_views
+from analytics_service import views as analytics_service_views
 
 router = routers.DefaultRouter()
-router.register(r'users', auth_service_views.UserViewSet, basename="users")
-router.register(r'inventory_system', inventory_service_views.ItemViewSet, basename="inventory_system")
-router.register(r'repair_system', cms_service_views.RepairViewSet, basename="repair_system")
+router.register('users', auth_service_views.UserViewSet, basename="users")
+router.register('inventory_service', analytics_service_views.ItemTypesViewSet, basename="inventory_service")
+router.register('repair_service', analytics_service_views.ItemTypesViewSet, basename="repair_service")
+router.register('analytics_service', analytics_service_views.AnalyticsLinksViewSet, basename="analytics_service")
+
+inventory_service_router = routers.NestedDefaultRouter(router, 'inventory_service')
+inventory_service_router.register('items', inventory_service_views.ItemViewSet, basename="items")
+repair_service_router = routers.NestedDefaultRouter(router, 'repair_service')
+repair_service_router.register('items', cms_service_views.RepairViewSet, basename="items")
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('', include(router.urls)),
+                  path('', include(inventory_service_router.urls)),
+                  path('', include(repair_service_router.urls)),
                   path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
               ] + staticfiles_urlpatterns()

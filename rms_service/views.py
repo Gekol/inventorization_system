@@ -28,6 +28,7 @@ class RepairViewSet(viewsets.ModelViewSet):
         message = {
             "item_id": instance.id,
             "item_name": instance.name,
+            "type": instance.type.name,
             "username": request.user.username,
             "message": "Item fixed"
         }

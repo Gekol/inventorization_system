@@ -19,6 +19,7 @@ pycodestyle = "2.8.0"
 pyflakes = "2.4.0"
 pytz = "2022.1"
 sqlparse = "0.4.2"
+drf-nested-routers = "^0.93.4"
 
 [tool.poetry.dev-dependencies]
 

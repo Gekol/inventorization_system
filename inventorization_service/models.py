@@ -1,9 +1,11 @@
 from django.contrib.auth.models import User
 from django.db import models
+from analytics_service.models import ItemType
 
 
 class Item(models.Model):
     name = models.CharField(max_length=100)
+    type = models.ForeignKey(ItemType, on_delete=models.CASCADE, default=1)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, default=None, null=True)
     status = models.CharField(max_length=30, choices=[
         ("in_warehouse", "In warehouse"),
@@ -19,6 +21,7 @@ class Item(models.Model):
         return {
             "id": self.id,
             "name": self.name,
+            "type": self.type.name,
             "owner": None if self.owner is None else self.owner.username,
             "status": self.status,
             "fix_status": self.fix_status,

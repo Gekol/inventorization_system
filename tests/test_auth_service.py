@@ -8,6 +8,9 @@ from core.create_functions import initialise_test_groups, initialise_test_users,
 class TestAuthService(APITestCase):
 
     def setUp(self) -> None:
+        self.folder_name = "test_logs"
+        self.file_name = "info.json"
+        self.folder_name = f"/Users/georgesokolovsky/diploma/inventorization_system/tests/{self.folder_name}"
         # Initialise groups
         self.admin_group, self.repairman_group, self.specialist_group = initialise_test_groups(
             ["admin", "repairman", "specialist"])

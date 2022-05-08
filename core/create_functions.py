@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, Group
 
-from inventorization_service.models import Item
+from inventorization_service.models import Item, ItemType
 
 MOCK_PASSWORD = "Some_password1111"
 
@@ -25,8 +25,17 @@ def initialise_test_users(pairs):
     return [create_user(user_name, MOCK_PASSWORD, group_name) for user_name, group_name in pairs]
 
 
-def create_item(name: str, owner: User, fix_status="ok"):
+def create_type(name: str):
+    return ItemType.objects.create(name=name)
+
+
+def initialise_test_types(item_types):
+    return [create_type(item_type) for item_type in item_types]
+
+
+def create_item(name: str, type_id, owner: User, fix_status="ok"):
     return Item.objects.create(name=name,
+                               type_id=type_id,
                                owner=owner,
                                status="in_use",
                                fix_status=fix_status,
@@ -34,4 +43,4 @@ def create_item(name: str, owner: User, fix_status="ok"):
 
 
 def initialise_test_items(items):
-    return [create_item(item_name, owner, fix_status) for item_name, owner, fix_status in items]
+    return [create_item(item_name, type_id, owner, fix_status) for item_name, type_id, owner, fix_status in items]

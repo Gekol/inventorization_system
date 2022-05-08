@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'auth_service',
     'inventorization_service',
-    'rms_service'
+    'rms_service',
+    'analytics_service'
 ]
 
 MIDDLEWARE = [
