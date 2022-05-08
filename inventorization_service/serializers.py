@@ -6,7 +6,7 @@ from inventorization_service.models import Item
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
-        fields = ['name', 'status', 'fix_status']
+        fields = ['name', 'type', 'status', 'fix_status']
 
     def to_representation(self, instance):
         owner = None
@@ -15,6 +15,7 @@ class ItemSerializer(serializers.ModelSerializer):
         representation = {
             "id": instance.id,
             'name': instance.name,
+            'type': instance.type.name,
             'owner': owner,
             'status': instance.status,
             'fix_status': instance.fix_status,
@@ -46,6 +47,7 @@ class ItemUpdateSerializer(serializers.ModelSerializer):
         representation = {
             "id": instance.id,
             'name': instance.name,
+            'type': instance.type.name,
             'owner': owner,
             'status': instance.status,
             'fix_status': instance.fix_status,
