@@ -1,12 +1,7 @@
-import json
-import time
-
 from rest_framework.test import APITestCase
 
 from core.create_functions import initialise_test_groups, initialise_test_users, MOCK_PASSWORD, \
     initialise_test_items, initialise_test_types
-from inventorization_service.models import Item
-from inventorization_service.serializers import ItemSerializer, ItemUpdateSerializer
 
 
 class TestInventoryService(APITestCase):

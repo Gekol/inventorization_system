@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('analytics_service', '0001_initial'),
         ('inventorization_service', '0006_alter_item_fix_status'),
@@ -15,6 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='item',
             name='type',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='analytics_service.itemtype'),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE,
+                                    to='analytics_service.itemtype'),
         ),
     ]
