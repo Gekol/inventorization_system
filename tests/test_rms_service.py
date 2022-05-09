@@ -12,9 +12,10 @@ from rms_service.serializers import RepairSerializer
 class TestInventoryService(APITestCase):
 
     def setUp(self) -> None:
-        self.folder_name = "test_logs"
+        self.folder_path = "tests/test_logs"
         self.file_name = "info.json"
-        self.folder_name = f"/Users/georgesokolovsky/diploma/inventorization_system/tests/{self.folder_name}"
+        self.file_path = f"{self.folder_path}/{self.file_name}"
+
         # Initialise groups
         self.admin_group, self.repairman_group, self.specialist_group = initialise_test_groups(
             ["admin", "repairman", "specialist"])
@@ -24,13 +25,15 @@ class TestInventoryService(APITestCase):
             [("gekol", ["admin"]), ("michael", ["repairman"]), ("oleksyi", ["specialist"])])
 
         # Initialise item types
-        self.laptop_type = initialise_test_types(["Laptop"])[0]
+        self.laptop_type, self.cup_type = initialise_test_types([("Laptop", False), ("Cup", True)])
 
         # Initialise items
         self.laptop1, self.laptop2, self.laptop3 = initialise_test_items(
-            [("Laptop 1", 1, self.gekol, "broken"),
-             ("Laptop 2", 1, self.michael, "broken"),
+            [("Laptop 1", 1, self.gekol, "broken"), ("Laptop 2", 1, self.michael, "broken"),
              ("Laptop 3", 1, self.oleksyi, "broken")])
+
+        # Authenticate
+        self.client.login(username="gekol", password=MOCK_PASSWORD)
 
         # Authenticate
         self.client.login(username="michael", password=MOCK_PASSWORD)
@@ -44,5 +47,5 @@ class TestInventoryService(APITestCase):
 
     def tearDown(self) -> None:
         time.sleep(1)
-        with open(f"{self.folder_name}/{self.file_name}", "w") as f:
+        with open(self.file_path, "w") as f:
             f.write(json.dumps([]))

@@ -12,9 +12,9 @@ from inventorization_service.serializers import ItemSerializer, ItemUpdateSerial
 class TestInventoryService(APITestCase):
 
     def setUp(self) -> None:
-        self.folder_name = "test_logs"
+        self.folder_path = "tests/test_logs"
         self.file_name = "info.json"
-        self.folder_name = f"/Users/georgesokolovsky/diploma/inventorization_system/tests/{self.folder_name}"
+        self.file_path = f"{self.folder_path}/{self.file_name}"
 
         # Initialise groups
         self.admin_group, self.repairman_group, self.specialist_group = initialise_test_groups(
@@ -25,10 +25,10 @@ class TestInventoryService(APITestCase):
             [("gekol", ["admin"]), ("michael", ["repairman"]), ("oleksyi", ["specialist"])])
 
         # Initialise item types
-        self.laptop_type, self.cup_type = initialise_test_types(["Laptop", "Cup"])
+        self.laptop_type, self.cup_type = initialise_test_types([("Laptop", False), ("Cup", True)])
 
         # Initialise items
-        self.laptop1, self.laptop2, self.laptop3 = initialise_test_items(
+        self.laptop1, self.laptop2, self.laptop3, self.cup1, self.cup2, self.cup3 = initialise_test_items(
             [("Laptop 1", 1, self.gekol, "ok"), ("Laptop 2", 1, self.michael, "ok"),
              ("Laptop 3", 1, self.oleksyi, "ok"), ("Cup 1", 2, None, "ok"),
              ("Cup 2", 2, None, "ok"), ("Cup 3", 2, None, "ok")])
@@ -63,7 +63,7 @@ class TestInventoryService(APITestCase):
     def test_create_new_item(self):
         data = {
             "name": "Laptop 4",
-            "status": "in_use",
+            "status": "in_warehouse",
             "fix_status": "ok",
         }
         initial_objects_count = len(Item.objects.all())
@@ -83,8 +83,14 @@ class TestInventoryService(APITestCase):
         self.laptop1 = Item.objects.get(pk=1)
         self.assertEqual(response.data, ItemUpdateSerializer().to_representation(self.laptop1))
 
-    def test_oermanent_extradition(self):
-        response = self.client.put(f"/inventory_service/{self.laptop_type.id}/items/{self.laptop1.id}/", data=data)
+    def test_permanent_extradition(self):
+        data = {
+            "status": "in_use",
+            "fix_status": "ok",
+        }
+        initial_len = len(Item.objects.all())
+        self.client.put(f"/inventory_service/{self.cup_type.id}/items/{self.cup1.id}/", data=data)
+        self.assertEqual(initial_len, len(Item.objects.all()) + 1)
 
     def test_implicit_change_owner(self):
         data = {
@@ -110,5 +116,5 @@ class TestInventoryService(APITestCase):
 
     def tearDown(self) -> None:
         time.sleep(1)
-        with open(f"{self.folder_name}/{self.file_name}", "w") as f:
+        with open(f"{self.file_path}", "w") as f:
             f.write(json.dumps([]))

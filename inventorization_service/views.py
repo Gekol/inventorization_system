@@ -1,6 +1,6 @@
 import json
 
-from rest_framework import viewsets, permissions
+from rest_framework import status, viewsets, permissions
 from rest_framework.response import Response
 
 from core import IsOwner, IsAdmin
@@ -31,6 +31,15 @@ class ItemViewSet(viewsets.ModelViewSet):
             serializer_class = ItemUpdateSerializer
         return serializer_class
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        item = serializer.save()
+        item.type_id = int(self.kwargs["nested_1_pk"])
+        item.save()
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         instance.fix_status = self.request.data["fix_status"]
@@ -38,12 +47,17 @@ class ItemViewSet(viewsets.ModelViewSet):
         if instance.fix_status == "broken":
             message = "Item is broken"
             instance.broke_count += 1
+            instance.save()
 
         instance.status = self.request.data["status"]
         if instance.status == "in_warehouse":
             instance.owner = None
             message = "Item is returned to the warehouse" if message == "" else message
+            instance.save()
         elif instance.type.is_permanent:
+            instance.owner = request.user
+            message = "Item is permanently taken from the warehouse" if message == "" else message
+            instance.save()
             instance.delete()
         else:
             instance.owner = request.user

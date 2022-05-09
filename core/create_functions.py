@@ -25,12 +25,12 @@ def initialise_test_users(pairs):
     return [create_user(user_name, MOCK_PASSWORD, group_name) for user_name, group_name in pairs]
 
 
-def create_type(name: str):
-    return ItemType.objects.create(name=name)
+def create_type(name: str, is_permanent):
+    return ItemType.objects.create(name=name, is_permanent=is_permanent)
 
 
 def initialise_test_types(item_types):
-    return [create_type(item_type) for item_type in item_types]
+    return [create_type(item_type, is_permanent) for item_type, is_permanent in item_types]
 
 
 def create_item(name: str, type_id, owner: User, fix_status="ok"):
