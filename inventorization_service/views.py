@@ -43,10 +43,12 @@ class ItemViewSet(viewsets.ModelViewSet):
         if instance.status == "in_warehouse":
             instance.owner = None
             message = "Item is returned to the warehouse" if message == "" else message
+        elif instance.type.is_permanent:
+            instance.delete()
         else:
             instance.owner = request.user
             message = "Item is taken from the warehouse" if message == "" else message
-        instance.save()
+            instance.save()
 
         message = {
             "item_id": instance.id,

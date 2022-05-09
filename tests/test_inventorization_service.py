@@ -25,12 +25,13 @@ class TestInventoryService(APITestCase):
             [("gekol", ["admin"]), ("michael", ["repairman"]), ("oleksyi", ["specialist"])])
 
         # Initialise item types
-        self.laptop_type = initialise_test_types(["Laptop"])[0]
+        self.laptop_type, self.cup_type = initialise_test_types(["Laptop", "Cup"])
 
         # Initialise items
         self.laptop1, self.laptop2, self.laptop3 = initialise_test_items(
             [("Laptop 1", 1, self.gekol, "ok"), ("Laptop 2", 1, self.michael, "ok"),
-             ("Laptop 3", 1, self.oleksyi, "ok")])
+             ("Laptop 3", 1, self.oleksyi, "ok"), ("Cup 1", 2, None, "ok"),
+             ("Cup 2", 2, None, "ok"), ("Cup 3", 2, None, "ok")])
 
         # Authenticate
         self.client.login(username="gekol", password=MOCK_PASSWORD)
@@ -81,6 +82,9 @@ class TestInventoryService(APITestCase):
         self.assertEqual(Item.objects.get(pk=self.laptop1.id).broke_count, 1)
         self.laptop1 = Item.objects.get(pk=1)
         self.assertEqual(response.data, ItemUpdateSerializer().to_representation(self.laptop1))
+
+    def test_oermanent_extradition(self):
+        response = self.client.put(f"/inventory_service/{self.laptop_type.id}/items/{self.laptop1.id}/", data=data)
 
     def test_implicit_change_owner(self):
         data = {
