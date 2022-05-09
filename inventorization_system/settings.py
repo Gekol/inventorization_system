@@ -127,22 +127,3 @@ REST_FRAMEWORK = {
     ],
     'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
-
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'handlers': {
-#         'rabbit': {
-#             'level': 'DEBUG',
-#             'class': 'python_logging_rabbitmq.RabbitMQHandler',
-#             'host': 'localhost'
-#         }
-#     },
-#     'loggers': {
-#         'myapp': {
-#             'handlers': ['rabbit'],
-#             'level': 'DEBUG',
-#             'propagate': False
-#         }
-#     }
-# }

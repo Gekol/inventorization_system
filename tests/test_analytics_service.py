@@ -1,14 +1,15 @@
 from rest_framework.test import APITestCase
 
+from analytics_service.serializers import ItemTypeSerializer
 from core.create_functions import initialise_test_groups, initialise_test_users, MOCK_PASSWORD, \
     initialise_test_items, initialise_test_types
 
 
 class TestInventoryService(APITestCase):
     def setUp(self) -> None:
-        self.folder_name = "test_logs"
+        self.folder_path = "tests/test_logs"
         self.file_name = "info.json"
-        self.folder_name = f"/Users/georgesokolovsky/diploma/inventorization_system/tests/{self.folder_name}"
+        self.file_path = f"{self.folder_path}/{self.file_name}"
 
         # Initialise groups
         self.admin_group, self.repairman_group, self.specialist_group = initialise_test_groups(
@@ -19,15 +20,21 @@ class TestInventoryService(APITestCase):
             [("gekol", ["admin"]), ("michael", ["repairman"]), ("oleksyi", ["specialist"])])
 
         # Initialise item types
-        self.laptop_type = initialise_test_types(["Laptop"])[0]
+        self.laptop_type, self.cup_type = initialise_test_types([("Laptop", False), ("Cup", True)])
 
         # Initialise items
-        self.laptop1, self.laptop2, self.laptop3 = initialise_test_items(
+        self.laptop1, self.laptop2, self.laptop3, self.cup1, self.cup2, self.cup3 = initialise_test_items(
             [("Laptop 1", 1, self.gekol, "ok"), ("Laptop 2", 1, self.michael, "ok"),
-             ("Laptop 3", 1, self.oleksyi, "ok")])
+             ("Laptop 3", 1, self.oleksyi, "ok"), ("Cup 1", 2, None, "ok"),
+             ("Cup 2", 2, None, "ok"), ("Cup 3", 2, None, "ok")])
 
         # Authenticate
         self.client.login(username="gekol", password=MOCK_PASSWORD)
+
+    def test_get_all_item_types(self):
+        response = self.client.get("/inventory_service/")
+        self.assertEqual(response.data, [ItemTypeSerializer().to_representation(self.laptop_type),
+                                         ItemTypeSerializer().to_representation(self.cup_type)])
 
     def test_item_type_to_dict(self):
         self.assertEqual(self.laptop_type.to_dict(), {

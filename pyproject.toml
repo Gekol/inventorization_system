@@ -2,7 +2,7 @@
 name = "inventorization_system"
 version = "0.1.0"
 description = "My diploma project"
-authors = ["Heorhii <george.sokolovsky2001@gmail.com>"]
+authors = ["Gekol <george.sokolovsky2001@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
