@@ -27,7 +27,7 @@ router = routers.DefaultRouter()
 router.register('users', auth_service_views.UserViewSet, basename="users")
 router.register('inventory_service', analytics_service_views.ItemTypesViewSet, basename="inventory_service")
 router.register('repair_service', analytics_service_views.ItemTypesViewSet, basename="repair_service")
-router.register('analytics_service', analytics_service_views.AnalyticsLinksViewSet, basename="analytics_service")
+router.register('analytics_service', analytics_service_views.AnalyticsViewSet, basename="analytics_service")
 
 inventory_service_router = routers.NestedDefaultRouter(router, 'inventory_service')
 inventory_service_router.register('items', inventory_service_views.ItemViewSet, basename="items")
