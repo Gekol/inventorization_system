@@ -5,6 +5,7 @@ from rest_framework.response import Response
 
 from analytics_service.serializers import ItemTypeSerializer
 from core import IsAdmin
+from core.analytics import get_relation
 from inventorization_service.models import ItemType, Item
 
 
@@ -25,10 +26,11 @@ class AnalyticsViewSet(viewsets.ViewSet):
     """
 
     def list(self, request, *args, **kwargs):
-        in_use = Count('type_id', filter=Q(status='in_use'))
-        overall = Count('type_id')
-        print(Item.objects.annotate())
-        return Response(Item.objects.all())
+
+
+        data = [dict(item_type.to_dict(), ** {"in_use": item_type.in_use, "overall": item_type.overall})
+                for item_type in get_relation()]
+        return Response(data)
 
     def get_permissions(self):
         permission_classes = [permissions.IsAuthenticated, IsAdmin]

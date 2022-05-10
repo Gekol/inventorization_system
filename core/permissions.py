@@ -19,7 +19,7 @@ def _is_in_group(user: User, group_name: str):
     try:
         return Group.objects.get(name=group_name).user_set.filter(id=user.id).exists()
     except Group.DoesNotExist:
-        return None
+        return False
 
 
 def _has_group_permission(user: User, required_groups: list):

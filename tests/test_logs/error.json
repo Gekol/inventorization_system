@@ -1,1 +1,1 @@
-[]
+[{"datetime": "2022/05/10 10:39:21", "data": {"error_message": "[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1122)"}}, {"datetime": "2022/05/10 10:38:50", "data": {"error_message": "[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1122)"}}, {"datetime": "2022/05/10 10:37:24", "data": {"error_message": "[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1122)"}}]

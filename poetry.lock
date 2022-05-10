@@ -142,12 +142,28 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "secure-smtplib"
+version = "0.1.1"
+description = "Secure SMTP subclasses for Python 2"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "sqlparse"
 version = "0.4.2"
 description = "A non-validating SQL parser."
 category = "main"
 optional = false
 python-versions = ">=3.5"
+
+[[package]]
+name = "ssl"
+version = "1.16"
+description = "SSL wrapper for socket objects (2.3, 2.4, 2.5 compatible)"
+category = "main"
+optional = false
+python-versions = "*"
 
 [[package]]
 name = "tzdata"
@@ -160,7 +176,7 @@ python-versions = ">=2"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "0a53d023c7fd51de3bc5f88d48dc108a9ae2ad8f4c25867c0f519804f6c6ae5e"
+content-hash = "bc6f0ed6ef501cfae0d71228fa59e934d8cc1fb9670e80abcf4454dc84b6ec99"
 
 [metadata.files]
 asgiref = [
@@ -267,9 +283,16 @@ pytz = [
     {file = "pytz-2022.1-py2.py3-none-any.whl", hash = "sha256:e68985985296d9a66a881eb3193b0906246245294a881e7c8afe623866ac6a5c"},
     {file = "pytz-2022.1.tar.gz", hash = "sha256:1e760e2fe6a8163bc0b3d9a19c4f84342afa0a2affebfaa84b01b978a02ecaa7"},
 ]
+secure-smtplib = [
+    {file = "secure-smtplib-0.1.1.tar.gz", hash = "sha256:3d4903f6612626ccd9b77ef05313cb3c3952a59a4d756cda2377b272fabad8b9"},
+    {file = "secure_smtplib-0.1.1-py2.py3-none-any.whl", hash = "sha256:645ea0a341f306fa3307c8fe1169765c417ff363db9946fa69f3669a9b718069"},
+]
 sqlparse = [
     {file = "sqlparse-0.4.2-py3-none-any.whl", hash = "sha256:48719e356bb8b42991bdbb1e8b83223757b93789c00910a616a071910ca4a64d"},
     {file = "sqlparse-0.4.2.tar.gz", hash = "sha256:0c00730c74263a94e5a9919ade150dfc3b19c574389985446148402998287dae"},
+]
+ssl = [
+    {file = "ssl-1.16.tar.gz", hash = "sha256:ac21156fee6aee9eb8d765bbb16f5f49492d81ff4b22f7b8fc001d2251120930"},
 ]
 tzdata = [
     {file = "tzdata-2022.1-py2.py3-none-any.whl", hash = "sha256:238e70234214138ed7b4e8a0fab0e5e13872edab3be586ab8198c407620e2ab9"},
