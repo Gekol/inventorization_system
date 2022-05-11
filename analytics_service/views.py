@@ -15,7 +15,7 @@ class ItemTypesViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         permission_classes = [permissions.IsAuthenticated]
-        if self.action in ["update", "partial_update"]:
+        if self.action in ["create", "update", "partial_update"]:
             permission_classes += [IsAdmin]
         return [permission() for permission in permission_classes]
 
@@ -26,9 +26,7 @@ class AnalyticsViewSet(viewsets.ViewSet):
     """
 
     def list(self, request, *args, **kwargs):
-
-
-        data = [dict(item_type.to_dict(), ** {"in_use": item_type.in_use, "overall": item_type.overall})
+        data = [dict(item_type.to_dict(), **{"in_use": item_type.in_use, "total": item_type.total})
                 for item_type in get_relation()]
         return Response(data)
 

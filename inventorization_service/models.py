@@ -13,6 +13,7 @@ class Item(models.Model):
     ])
     fix_status = models.CharField(max_length=30, choices=[
         ("broken", "Broken"),
+        ("unfixable", "Unfixable"),
         ("ok", "OK")
     ], default="ok")
     broke_count = models.IntegerField()
