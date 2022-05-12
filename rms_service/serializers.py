@@ -4,6 +4,11 @@ from inventorization_service.models import Item
 
 
 class RepairSerializer(serializers.ModelSerializer):
+    fix_status = serializers.ChoiceField(choices=[
+        ("unfixable", "Unfixable"),
+        ("ok", "OK")
+    ], default="ok")
+
     def to_representation(self, instance):
         owner = None
         if instance.owner is not None:

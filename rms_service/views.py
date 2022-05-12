@@ -1,5 +1,4 @@
 import json
-
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 
@@ -13,7 +12,7 @@ class RepairViewSet(viewsets.ModelViewSet):
     queryset = Item.objects.filter(fix_status="broken")
     serializer_class = RepairSerializer
     permission_classes = [permissions.IsAuthenticated]
-    http_method_names = ["get", "options", "put", "patch"]
+    http_method_names = ["get", "put", "patch"]
     logger = Logger()
 
     def get_permissions(self):
@@ -30,8 +29,11 @@ class RepairViewSet(viewsets.ModelViewSet):
             "item_name": instance.name,
             "type": instance.type.name,
             "username": request.user.username,
-            "message": "Item fixed"
+            "message": "Item fixed" if instance.fix_status == "ok" else "Item can't be fixed!"
         }
+        if instance.fix_status == "unfixable":
+            instance.delete()
+
         self.logger.emit_log("info", json.dumps(message))
 
         return Response(instance.to_dict())
