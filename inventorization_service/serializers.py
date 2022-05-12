@@ -36,6 +36,11 @@ class ItemSerializer(serializers.ModelSerializer):
 
 
 class ItemUpdateSerializer(serializers.ModelSerializer):
+    fix_status = serializers.ChoiceField(choices=[
+        ("broken", "Broken"),
+        ("ok", "OK")
+    ], default="ok")
+
     class Meta:
         model = Item
         fields = ['status', 'fix_status']

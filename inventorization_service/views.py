@@ -1,7 +1,9 @@
 import json
 
-from rest_framework import status, viewsets, permissions
+from django.shortcuts import redirect
+from rest_framework import viewsets, permissions
 from rest_framework.response import Response
+from rest_framework.reverse import reverse
 
 from core import IsOwner, IsAdmin
 from core import Logger
@@ -40,8 +42,7 @@ class ItemViewSet(viewsets.ModelViewSet):
         item = serializer.save()
         item.type_id = int(self.kwargs["nested_1_pk"])
         item.save()
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return redirect("fixed_items-list", nested_1_pk=self.kwargs["nested_1_pk"])
 
     def send_email(self):
         for item_type in get_lacking_item_types():
@@ -50,11 +51,33 @@ class ItemViewSet(viewsets.ModelViewSet):
                                          f"but there are only {item_type.in_warehouse} on the warehouse!")
         print("Email sent!")
 
+    def list(self, request, *args, **kwargs):
+        queryset = Item.objects.filter(fix_status='ok', type_id=int(self.kwargs["nested_1_pk"]))
+
+        serializer = self.get_serializer(queryset, many=True)
+        items = serializer.data
+        items = [item for item in items if str(item["owner"]) == str(self.request.user) or item["owner"] is None]
+        view_name = "fixed_items" if "/inventory_service/" in request.path else "broken_items"
+        items = [{
+            "name": item["name"],
+            "item_link": reverse(f"{view_name}-detail",
+                                 args=[self.kwargs["nested_1_pk"], item["id"]],
+                                 request=request)} for item in items]
+        page = self.paginate_queryset(self.get_queryset())
+        if page is not None:
+            return self.get_paginated_response(items)
+        return Response(items)
+
+    # def retrieve(self, request, *args, **kwargs):
+    #     instance = self.get_object()
+    #     serializer = self.get_serializer(instance)
+    #     return Response(serializer.data)
+
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         instance.fix_status = self.request.data["fix_status"]
         message = ""
-        if instance.fix_status == "broken":
+        if instance.is_broken:
             message = "Item is broken"
             instance.broke_count += 1
             instance.save()

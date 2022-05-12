@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('inventorization_service', '0007_item_type'),
     ]
@@ -13,6 +12,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='item',
             name='fix_status',
-            field=models.CharField(choices=[('broken', 'Broken'), ('unfixable', 'Unfixable'), ('ok', 'OK')], default='ok', max_length=30),
+            field=models.CharField(choices=[('broken', 'Broken'), ('unfixable', 'Unfixable'), ('ok', 'OK')],
+                                   default='ok', max_length=30),
         ),
     ]

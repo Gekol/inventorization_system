@@ -30,9 +30,9 @@ router.register('repair_service', analytics_service_views.ItemTypesViewSet, base
 router.register('analytics_service', analytics_service_views.AnalyticsViewSet, basename="analytics_service")
 
 inventory_service_router = routers.NestedDefaultRouter(router, 'inventory_service')
-inventory_service_router.register('items', inventory_service_views.ItemViewSet, basename="items")
+inventory_service_router.register('items', inventory_service_views.ItemViewSet, basename="fixed_items")
 repair_service_router = routers.NestedDefaultRouter(router, 'repair_service')
-repair_service_router.register('items', cms_service_views.RepairViewSet, basename="items")
+repair_service_router.register('items', cms_service_views.RepairViewSet, basename="broken_items")
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
