@@ -1,11 +1,14 @@
+import json
+import time
+
 from rest_framework.test import APITestCase
 
-from analytics_service.serializers import ItemTypeSerializer
+from core.analytics import get_lacking_item_types, get_relation
 from core.create_functions import initialise_test_groups, initialise_test_users, MOCK_PASSWORD, \
     initialise_test_items, initialise_test_types
 
 
-class TestInventoryService(APITestCase):
+class TestAnalyticsService(APITestCase):
     def setUp(self) -> None:
         self.folder_path = "tests/test_logs"
         self.file_name = "info.json"
@@ -33,8 +36,37 @@ class TestInventoryService(APITestCase):
 
     def test_get_all_item_types(self):
         response = self.client.get("/inventory_service/")
-        self.assertEqual(response.data, [ItemTypeSerializer().to_representation(self.laptop_type),
-                                         ItemTypeSerializer().to_representation(self.cup_type)])
+        self.assertEqual(response.data, [
+            {
+                "item_type": self.laptop_type.name,
+                "item_type_info": f'http://testserver/inventory_service/{self.laptop_type.id}/',
+                'items': f'http://testserver/inventory_service/{self.laptop_type.id}/items/'
+            },
+            {
+                "item_type": self.cup_type.name,
+                "item_type_info": f'http://testserver/inventory_service/{self.cup_type.id}/',
+                'items': f'http://testserver/inventory_service/{self.cup_type.id}/items/'
+            }
+        ])
+
+    def test_get_lacking_item_types(self):
+        expected = {"Laptop", "Cup"}
+        result = get_lacking_item_types()
+        self.assertEqual(result, expected)
+
+    def test_relation(self):
+        expected = dict(self.laptop_type.to_dict(),
+                        **{"in_use": 3,
+                           "total": 3,
+                           "relation": 100})
+        result = get_relation()
+        self.assertEqual(dict(result[0].to_dict(),
+                              **{"in_use": result[0].in_use,
+                                 "total": result[0].total,
+                                 "relation": result[0].relation}), expected)
+
+    def test_item_type_to_str(self):
+        self.assertEqual(str(self.laptop_type), "Laptop")
 
     def test_item_type_to_dict(self):
         self.assertEqual(self.laptop_type.to_dict(), {
@@ -44,5 +76,15 @@ class TestInventoryService(APITestCase):
             "is_permanent": False
         })
 
-    def test_item_type_to_str(self):
-        self.assertEqual(str(self.laptop_type), "Laptop")
+    def test_get_analytics(self):
+        expected = [dict(self.laptop_type.to_dict(),
+                         **{"in_use": 3,
+                            "total": 3,
+                            "relation": 100})]
+        response = self.client.get("/analytics_service/")
+        self.assertEqual(expected, response.data)
+
+    def tearDown(self) -> None:
+        time.sleep(1)
+        with open(f"{self.file_path}", "w") as f:
+            f.write(json.dumps([]))

@@ -5,9 +5,9 @@ from analytics_service.models import ItemType
 
 def get_lacking_item_types():
     in_warehouse = Count('item', filter=Q(item__status='in_warehouse'))
-    item_types = [item_type for item_type in
-                  ItemType.objects.filter(is_permanent=False).annotate(in_warehouse=in_warehouse)
-                  if item_type.min_amount > item_type.in_warehouse]
+    item_types = {item_type.name for item_type in
+                  ItemType.objects.all().annotate(in_warehouse=in_warehouse)
+                  if item_type.min_amount > item_type.in_warehouse}
 
     return item_types
 

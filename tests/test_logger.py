@@ -4,17 +4,17 @@ from collections import namedtuple
 
 from rest_framework.test import APITestCase
 
-from core.logger import Logger, get_callback
+from core.asynchronous_messenger import AsynchronousMessenger, get_callback
 
 
-class TestLogger(APITestCase):
+class TestAsynchronousMessenger(APITestCase):
     def setUp(self) -> None:
         self.folder_path = "tests/test_logs"
         self.file_name = "info.json"
         self.file_path = f"{self.folder_path}/{self.file_name}"
-        self.logger = Logger()
+        self.asynchronous_messenger = AsynchronousMessenger()
 
-    def test_emit_log(self):
+    def test_send_message(self):
         severity = "info"
         message = {
             "item_id": 6,
@@ -23,7 +23,7 @@ class TestLogger(APITestCase):
             "username": "gekol",
             "message": "Item fixed"
         }
-        self.logger.emit_log(severity, json.dumps(message))
+        self.asynchronous_messenger.send_message(severity, json.dumps(message))
         time.sleep(5)
         logs = json.loads(open(self.file_path, "r").read())[0]["data"]
         self.assertEqual(logs, message)

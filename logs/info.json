@@ -1,1 +1,42 @@
-[{"datetime": "2022/05/10 12:39:21", "data": {"item_id": null, "item_name": "Pink cup", "type": "Cup", "username": "gekol", "message": "Item is permanently taken from the warehouse"}}, {"datetime": "2022/05/10 12:38:50", "data": {"item_id": null, "item_name": "Black cup", "type": "Cup", "username": "gekol", "message": "Item is permanently taken from the warehouse"}}, {"datetime": "2022/05/10 12:37:24", "data": {"item_id": null, "item_name": "Green cup", "type": "Cup", "username": "gekol", "message": "Item is permanently taken from the warehouse"}}]
+[
+    {
+        "datetime": "2022/05/23 00:01:59",
+        "data": {
+            "item_id": 1,
+            "item_name": "Laptop 1",
+            "type": "Laptop",
+            "username": "gekol",
+            "message": "Item is broken"
+        }
+    },
+    {
+        "datetime": "2022/05/23 00:01:57",
+        "data": {
+            "item_id": null,
+            "item_name": "Cup 1",
+            "type": "Cup",
+            "username": "gekol",
+            "message": "Item is permanently taken from the warehouse"
+        }
+    },
+    {
+        "datetime": "2022/05/23 00:01:54",
+        "data": {
+            "item_id": 1,
+            "item_name": "Laptop 1",
+            "type": "Laptop",
+            "username": "gekol",
+            "message": "Item is taken from the warehouse"
+        }
+    },
+    {
+        "datetime": "2022/05/23 00:01:49",
+        "data": {
+            "item_id": 1,
+            "item_name": "Laptop 1",
+            "type": "Laptop",
+            "username": "gekol",
+            "message": "Item is taken from the warehouse"
+        }
+    }
+]

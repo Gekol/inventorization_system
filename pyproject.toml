@@ -21,6 +21,7 @@ pytz = "2022.1"
 sqlparse = "0.4.2"
 drf-nested-routers = "^0.93.4"
 secure-smtplib = "^0.1.1"
+telegram-send = "^0.34"
 
 [tool.poetry.dev-dependencies]
 

@@ -1,5 +1,5 @@
 from .permissions import NoAccessPermission, IsOwner, _is_in_group, _has_group_permission, IsAdmin, IsRepairman
-from .logger import Logger
+from .asynchronous_messenger import AsynchronousMessenger
 
-__all__ = ("Logger", "NoAccessPermission", "IsOwner", "IsAdmin", "IsRepairman",
+__all__ = ("AsynchronousMessenger", "NoAccessPermission", "IsOwner", "IsAdmin", "IsRepairman",
            "_is_in_group", "_has_group_permission")
