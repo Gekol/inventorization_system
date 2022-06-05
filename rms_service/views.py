@@ -2,6 +2,7 @@ import json
 
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
+from rest_framework.reverse import reverse
 
 from core import AsynchronousMessenger
 from core.permissions import IsAdmin, IsRepairman
@@ -19,6 +20,20 @@ class RepairViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         permission_classes = (IsRepairman | IsAdmin,)
         return [permission() for permission in permission_classes]
+
+    def list(self, request, *args, **kwargs):
+        queryset = Item.objects.filter(fix_status='broken', type_id=int(self.kwargs["nested_1_pk"]))
+
+        serializer = self.get_serializer(queryset, many=True)
+        items = serializer.data
+        view_name = "broken_items"
+        items = [{
+            "name": item["name"],
+            "owner": item["owner"],
+            "item_link": reverse(f"{view_name}-detail",
+                                 args=[self.kwargs["nested_1_pk"], item["id"]],
+                                 request=request)} for item in items]
+        return Response(items)
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()

@@ -1,5 +1,45 @@
 [
     {
+        "datetime": "2022/06/05 16:31:22",
+        "data": {
+            "item_id": 1,
+            "item_name": "Macbook Pro M1",
+            "type": "Laptop",
+            "username": "Oleksyi_Sokolovskyi",
+            "message": "Item fixed"
+        }
+    },
+    {
+        "datetime": "2022/06/05 16:28:06",
+        "data": {
+            "item_id": 1,
+            "item_name": "Macbook Pro M1",
+            "type": "Laptop",
+            "username": "gekol",
+            "message": "Item is broken"
+        }
+    },
+    {
+        "datetime": "2022/06/05 16:12:16",
+        "data": {
+            "item_id": 6,
+            "item_name": "Lenovo ThinkPad T15g Gen 1",
+            "type": "Laptop",
+            "username": "Oleksyi_Sokolovskyi",
+            "message": "Item fixed"
+        }
+    },
+    {
+        "datetime": "2022/06/05 16:11:58",
+        "data": {
+            "item_id": 1,
+            "item_name": "Macbook Pro M1",
+            "type": "Laptop",
+            "username": "Oleksyi_Sokolovskyi",
+            "message": "Item fixed"
+        }
+    },
+    {
         "datetime": "2022/06/05 13:44:20",
         "data": {
             "item_id": 6,

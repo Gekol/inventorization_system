@@ -16,15 +16,15 @@ class ItemViewSet(viewsets.ModelViewSet):
     asynchronous_messenger = AsynchronousMessenger()
 
     def get_queryset(self):
-        queryset = Item.objects.filter(fix_status='ok', type_id=int(self.kwargs["nested_1_pk"]))
+        queryset = Item.objects.filter(fix_status='ok')
         return queryset
 
     def get_permissions(self):
         permission_classes = [permissions.IsAuthenticated]
         if self.action in ["update", "partial_update"]:
-            permission_classes += [IsOwner]
+            permission_classes = [IsOwner]
         if self.action in ["create", "destroy"]:
-            permission_classes += [IsAdmin]
+            permission_classes = [IsAdmin]
         return [permission() for permission in permission_classes]
 
     def get_serializer_class(self):
@@ -47,15 +47,12 @@ class ItemViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         items = serializer.data
         items = [item for item in items if str(item["owner"]) == str(self.request.user) or item["owner"] is None]
-        view_name = "fixed_items" if "/inventory_service/" in request.path else "broken_items"
+        view_name = "fixed_items"
         items = [{
             "name": item["name"],
             "item_link": reverse(f"{view_name}-detail",
                                  args=[self.kwargs["nested_1_pk"], item["id"]],
                                  request=request)} for item in items]
-        page = self.paginate_queryset(self.get_queryset())
-        if page is not None:
-            return self.get_paginated_response(items)
         return Response(items)
 
     # def retrieve(self, request, *args, **kwargs):

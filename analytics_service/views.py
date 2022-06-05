@@ -32,9 +32,9 @@ class ItemTypesViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         permission_classes = [permissions.IsAuthenticated]
         if self.request.path == "/repair_service/":
-            permission_classes = [permissions.IsAuthenticated, IsRepairman]
+            permission_classes = [IsRepairman]
         if self.action in ["create", "update", "partial_update"]:
-            permission_classes = [permissions.IsAuthenticated, IsAdmin]
+            permission_classes = [IsAdmin]
         return [permission() for permission in permission_classes]
 
 
@@ -68,5 +68,5 @@ class AnalyticsViewSet(viewsets.ViewSet):
     def get_permissions(self):
         permission_classes = [permissions.IsAuthenticated]
         if self.action in ["create", "destroy", "update", "partial_update"]:
-            permission_classes += [IsAdmin]
+            permission_classes = [IsAdmin]
         return [permission() for permission in permission_classes]
