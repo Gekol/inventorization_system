@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 from core import AsynchronousMessenger
+from core.analytics import get_lacking_types_messages
 from core.permissions import IsAdmin, IsRepairman
 from inventorization_service.models import Item
 from rms_service.serializers import RepairSerializer
@@ -51,5 +52,7 @@ class RepairViewSet(viewsets.ModelViewSet):
             instance.delete()
 
         self.asynchronous_messenger.send_message("info", json.dumps(message))
+        for message in get_lacking_types_messages():
+            self.asynchronous_messenger.send_message("admin_message", message)
 
         return Response(instance.to_dict())

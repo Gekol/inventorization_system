@@ -1,5 +1,25 @@
 [
     {
+        "datetime": "2022/06/05 18:00:36",
+        "data": {
+            "item_id": 1,
+            "item_name": "Macbook Pro M1",
+            "type": "Laptop",
+            "username": "gekol",
+            "message": "Item fixed"
+        }
+    },
+    {
+        "datetime": "2022/06/05 18:00:24",
+        "data": {
+            "item_id": 1,
+            "item_name": "Macbook Pro M1",
+            "type": "Laptop",
+            "username": "gekol",
+            "message": "Item is broken"
+        }
+    },
+    {
         "datetime": "2022/06/05 16:31:22",
         "data": {
             "item_id": 1,

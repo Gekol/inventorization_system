@@ -4,7 +4,7 @@ from datetime import datetime
 
 from rest_framework.test import APITestCase
 
-from core.analytics import get_lacking_item_types, get_relation
+from core.analytics import get_lacking_item_types, get_relation, get_lacking_types_messages
 from core.create_functions import initialise_test_groups, initialise_test_users, MOCK_PASSWORD, \
     initialise_test_items, initialise_test_types
 
@@ -53,7 +53,7 @@ class TestAnalyticsService(APITestCase):
         ])
 
     def test_get_lacking_item_types(self):
-        expected = {"Laptop", "Cup"}
+        expected = [self.laptop_type.to_dict(), self.cup_type.to_dict()]
         result = get_lacking_item_types()
         self.assertEqual(result, expected)
 
@@ -67,6 +67,15 @@ class TestAnalyticsService(APITestCase):
                               **{"in_use": result[0].in_use,
                                  "total": result[0].total,
                                  "relation": result[0].relation}), expected)
+
+    def test_get_lacking_types_messages(self):
+        expected = [f"We are missing items of type Laptop. The relation of its current usage is equal to 100.0%. "
+                    f"We should buy 1 items of that type.",
+                    f"The number of the items of type Laptop is less than the minimum equal to 3.",
+                    f"The number of the items of type Cup is less than the minimum equal to 3."
+                    ]
+        result = get_lacking_types_messages()
+        self.assertEqual(result, expected)
 
     def test_item_type_to_str(self):
         self.assertEqual(str(self.laptop_type), "Laptop")

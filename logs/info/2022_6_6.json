@@ -1,0 +1,12 @@
+[
+    {
+        "datetime": "2022/06/06 00:15:57",
+        "data": {
+            "item_id": 1,
+            "item_name": "Laptop 1",
+            "type": "Laptop",
+            "username": "gekol",
+            "message": "Item is taken from the warehouse"
+        }
+    }
+]

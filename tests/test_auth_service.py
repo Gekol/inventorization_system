@@ -29,9 +29,9 @@ class TestAuthService(APITestCase):
 
     def test_get_all_users(self):
         response = self.client.get("/users/")
-        self.assertEqual(response.data[0], UserSerializer().to_representation(self.gekol))
-        self.assertEqual(response.data[1], UserSerializer().to_representation(self.michael))
-        self.assertEqual(response.data[2], UserSerializer().to_representation(self.oleksyi))
+        self.assertEqual(response.data[0], {'user_link': 'http://testserver/users/1/', 'username': 'gekol'})
+        self.assertEqual(response.data[1], {'user_link': 'http://testserver/users/2/', 'username': 'michael'})
+        self.assertEqual(response.data[2], {'user_link': 'http://testserver/users/3/', 'username': 'oleksyi'})
 
     def test_get_certain_user(self):
         response = self.client.get(f"/users/{self.oleksyi.id}/")
