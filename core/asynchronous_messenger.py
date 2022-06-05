@@ -10,8 +10,12 @@ SEVERITIES = ["error", "warning", "info", "admin_message"]
 def get_callback(folder_path):
     def callback(ch, method, properties, body):
         def make_log():
-            logs = json.loads(open(f"{folder_path}/{method.routing_key}.json", "r").read())
             current_moment = datetime.now()
+            file_name = f"{current_moment.year}_{current_moment.month}_{current_moment.day}.json"
+            try:
+                logs = json.loads(open(f"{folder_path}/{method.routing_key}/{file_name}", "r").read())
+            except FileNotFoundError:
+                logs = []
             data = {
                 "datetime": f"{current_moment.year}/"
                             f"{('0' if current_moment.month < 10 else '') + str(current_moment.month)}/"
@@ -26,7 +30,7 @@ def get_callback(folder_path):
                 logs = [data] + logs if current_moment.date() == last_log_time.date() else [data]
             else:
                 logs = [data]
-            log_file = open(f"{folder_path}/{method.routing_key}.json", "w")
+            log_file = open(f"{folder_path}/{method.routing_key}/{file_name}", "w")
             json.dump(logs, log_file, indent=4)
 
         def send_telegram_message(message):
@@ -48,8 +52,7 @@ class AsynchronousMessenger:
         self.channel.exchange_declare(exchange='direct_logs', exchange_type='direct')
 
     def run_consumer(self, queue_name, folder_path):
-        result = self.channel.queue_declare(queue=queue_name, exclusive=True, durable=True)
-        queue_name = result.method.queue
+        self.channel.queue_declare(queue=queue_name, exclusive=True, durable=True)
 
         for severity in SEVERITIES:
             self.channel.queue_bind(
