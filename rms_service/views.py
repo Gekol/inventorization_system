@@ -1,10 +1,11 @@
 import json
+
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 
+from core import AsynchronousMessenger
 from core.permissions import IsAdmin, IsRepairman
 from inventorization_service.models import Item
-from core import Logger
 from rms_service.serializers import RepairSerializer
 
 
@@ -13,7 +14,7 @@ class RepairViewSet(viewsets.ModelViewSet):
     serializer_class = RepairSerializer
     permission_classes = [permissions.IsAuthenticated]
     http_method_names = ["get", "put", "patch"]
-    logger = Logger()
+    asynchronous_messenger = AsynchronousMessenger()
 
     def get_permissions(self):
         permission_classes = (IsRepairman | IsAdmin,)
@@ -34,6 +35,6 @@ class RepairViewSet(viewsets.ModelViewSet):
         if instance.fix_status == "unfixable":
             instance.delete()
 
-        self.logger.emit_log("info", json.dumps(message))
+        self.asynchronous_messenger.send_message("info", json.dumps(message))
 
         return Response(instance.to_dict())

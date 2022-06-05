@@ -3,9 +3,8 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 from analytics_service.serializers import ItemTypeSerializer
-from core import IsAdmin
-from core.analytics import get_relation
-from core.email_sender import EmailSender
+from core import IsAdmin, AsynchronousMessenger
+from core.analytics import get_relation, get_lacking_item_types
 from inventorization_service.models import ItemType
 
 
@@ -41,18 +40,28 @@ class AnalyticsViewSet(viewsets.ViewSet):
     """
         Viewset to work with User model
     """
-    email_sender = EmailSender()
 
     def list(self, request, *args, **kwargs):
-        data = [dict(item_type.to_dict(),
-                     **{"in_use": item_type.in_use, "total": item_type.total, "relation": item_type.relation})
-                for item_type in get_relation()]
-        for item in data:
-            if item["relation"] >= 80:
-                self.email_sender.send_email(f"The relation of the items of type {item['name']} is {item['relation']}%."
-                                             f" We should buy additional {int(item['relation'] / 5)} "
-                                             f"items of this type.")
-        return Response(data)
+        item_types = [dict(item_type.to_dict(),
+                           **{"in_use": item_type.in_use,
+                              "total": item_type.total,
+                              "relation": item_type.relation})
+                      for item_type in get_relation()]
+        lacking_item_types = get_lacking_item_types()
+        asynchronous_messenger = AsynchronousMessenger()
+        for item_type in item_types:
+            if item_type["relation"] >= 80:
+                asynchronous_messenger.send_message("admin_message",
+                                                    f"We are missing items of type {item_type['name']}. "
+                                                    f"The relation of its current usage is equal "
+                                                    f"to {item_type['relation']}%. "
+                                                    f"We should buy {round(item_type['total'] * 0.2)} items of "
+                                                    f"that type.")
+            if item_type["name"] in lacking_item_types:
+                asynchronous_messenger.send_message("admin_message",
+                                                    f"The number of the items of type {item_type['name']} "
+                                                    f"is less than the minimum equal to {item_type['min_amount']}.")
+        return Response(item_types)
 
     def get_permissions(self):
         permission_classes = [permissions.IsAuthenticated]

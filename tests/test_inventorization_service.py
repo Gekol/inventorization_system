@@ -52,9 +52,10 @@ class TestInventoryService(APITestCase):
 
     def test_get_all_items(self):
         response = self.client.get(f"/inventory_service/{self.laptop_type.id}/items/")
-        self.assertEqual(response.data[0], ItemSerializer().to_representation(self.laptop1))
-        self.assertEqual(response.data[1], ItemSerializer().to_representation(self.laptop2))
-        self.assertEqual(response.data[2], ItemSerializer().to_representation(self.laptop3))
+        self.assertEqual(response.data[0], {
+            "name": self.laptop1.name,
+            "item_link": f'http://testserver/inventory_service/{self.laptop_type.id}/items/{self.laptop1.id}/'
+        })
 
     def test_get_certain_item(self):
         response = self.client.get(f"/inventory_service/{self.laptop_type.id}/items/{self.laptop1.id}/")
@@ -68,7 +69,7 @@ class TestInventoryService(APITestCase):
         }
         initial_objects_count = len(Item.objects.all())
         response = self.client.post(f"/inventory_service/{self.laptop_type.id}/items/", data=data)
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 302)
         self.assertEqual(initial_objects_count, len(Item.objects.all()) - 1)
 
     def test_update_item(self):

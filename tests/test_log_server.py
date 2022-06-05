@@ -1,8 +1,12 @@
 from rest_framework.test import APITestCase
-from core.logger import Logger
+from core.asynchronous_messenger import AsynchronousMessenger
 
 
-class TestLogServerStarter(APITestCase):
-    def start_server(self):
-        logger = Logger()
-        logger.run_server("/Users/georgesokolovsky/diploma/inventorization_system/tests/test_logs")
+class TestAsynchronousMessengerStarter(APITestCase):
+    def start_consumer(self):
+        asynchronous_messenger = AsynchronousMessenger()
+        asynchronous_messenger.run_consumer("test_logs",
+                                            "/Users/georgesokolovsky/diploma/inventorization_system/tests/test_logs")
+
+
+TestAsynchronousMessengerStarter().start_consumer()
