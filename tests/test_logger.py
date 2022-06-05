@@ -1,6 +1,7 @@
 import json
 import time
 from collections import namedtuple
+from datetime import datetime
 
 from rest_framework.test import APITestCase
 
@@ -9,9 +10,11 @@ from core.asynchronous_messenger import AsynchronousMessenger, get_callback
 
 class TestAsynchronousMessenger(APITestCase):
     def setUp(self) -> None:
+        current_moment = datetime.now()
         self.folder_path = "tests/test_logs"
-        self.file_name = "info.json"
-        self.file_path = f"{self.folder_path}/{self.file_name}"
+        self.severity = "info"
+        self.file_name = f"{current_moment.year}_{current_moment.month}_{current_moment.day}.json"
+        self.file_path = f"{self.folder_path}/{self.severity}/{self.file_name}"
         self.asynchronous_messenger = AsynchronousMessenger()
 
     def test_send_message(self):
@@ -39,7 +42,7 @@ class TestAsynchronousMessenger(APITestCase):
             "message": "Item fixed"
         }
         callback_function("", method, "", json.dumps(message))
-        logs = json.loads(open(f"{self.folder_path}/{self.file_name}", "r").read())[0]["data"]
+        logs = json.loads(open(self.file_path, "r").read())[0]["data"]
         self.assertEqual(logs, message)
 
     def tearDown(self) -> None:

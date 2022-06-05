@@ -1,5 +1,6 @@
 import json
 import time
+from datetime import datetime
 
 from rest_framework.test import APITestCase
 
@@ -10,9 +11,11 @@ from core.create_functions import initialise_test_groups, initialise_test_users,
 
 class TestAnalyticsService(APITestCase):
     def setUp(self) -> None:
+        current_moment = datetime.now()
         self.folder_path = "tests/test_logs"
-        self.file_name = "info.json"
-        self.file_path = f"{self.folder_path}/{self.file_name}"
+        self.severity = "info"
+        self.file_name = f"{current_moment.year}_{current_moment.month}_{current_moment.day}.json"
+        self.file_path = f"{self.folder_path}/{self.severity}/{self.file_name}"
 
         # Initialise groups
         self.admin_group, self.repairman_group, self.specialist_group = initialise_test_groups(

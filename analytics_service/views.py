@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 from analytics_service.serializers import ItemTypeSerializer
-from core import IsAdmin, AsynchronousMessenger
+from core import IsAdmin, AsynchronousMessenger, IsRepairman
 from core.analytics import get_relation, get_lacking_item_types
 from inventorization_service.models import ItemType
 
@@ -31,8 +31,10 @@ class ItemTypesViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         permission_classes = [permissions.IsAuthenticated]
+        if self.request.path == "/repair_service/":
+            permission_classes = [permissions.IsAuthenticated, IsRepairman]
         if self.action in ["create", "update", "partial_update"]:
-            permission_classes += [IsAdmin]
+            permission_classes = [permissions.IsAuthenticated, IsAdmin]
         return [permission() for permission in permission_classes]
 
 

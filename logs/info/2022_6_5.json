@@ -1,0 +1,32 @@
+[
+    {
+        "datetime": "2022/06/05 13:44:20",
+        "data": {
+            "item_id": 6,
+            "item_name": "Lenovo ThinkPad T15g Gen 1",
+            "type": "Laptop",
+            "username": "gekol",
+            "message": "Item is broken"
+        }
+    },
+    {
+        "datetime": "2022/06/05 13:43:56",
+        "data": {
+            "item_id": 6,
+            "item_name": "Lenovo ThinkPad T15g Gen 1",
+            "type": "Laptop",
+            "username": "gekol",
+            "message": "Item is taken from the warehouse"
+        }
+    },
+    {
+        "datetime": "2022/06/05 13:43:38",
+        "data": {
+            "item_id": 6,
+            "item_name": "Lenovo ThinkPad T15g Gen 1",
+            "type": "Laptop",
+            "username": "gekol",
+            "message": "Item is returned to the warehouse"
+        }
+    }
+]
