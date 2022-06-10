@@ -1,3 +1,5 @@
+from math import ceil
+
 from django.db.models import Count, Q
 
 from analytics_service.models import ItemType
@@ -36,7 +38,7 @@ def get_lacking_types_messages():
         if item_type["relation"] >= 80:
             messages.append(f"We are missing items of type {item_type['name']}. "
                             f"The relation of its current usage is equal to {item_type['relation']}%. "
-                            f"We should buy {round(item_type['total'] * 0.2)} items of that type.")
+                            f"We should buy {ceil(item_type['total'] * 0.2, )} items of that type.")
     for item_type in lacking_item_types:
         messages.append(f"The number of the items of type {item_type['name']} "
                         f"is less than the minimum equal to {item_type['min_amount']}.")
